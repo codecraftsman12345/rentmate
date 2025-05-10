@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <!-- Modern Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f6fa;
+            font-family: 'Inter', 'Roboto', Arial, sans-serif;
+            margin: 0;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            background: #23272f;
+            display: flex;
+            flex-direction: column;
+            padding-top: 48px;
+            box-shadow: 2px 0 16px rgba(0,0,0,0.04);
+        }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.08rem;
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 8px 0 0 8px;
+            margin-bottom: 8px;
+            transition: background 0.18s, color 0.18s;
+        }
+        .sidebar a:hover {
+            background: #353b48;
+            color: #43e97b;
+        }
+        .dashboard-card {
+            background: #fff;
+            max-width: 420px;
+            margin: 80px auto 0 320px;
+            padding: 2.5rem 2.2rem 2rem 2.2rem;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .dashboard-card h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            color: #23272f;
+        }
+        .dashboard-card .household-info {
+            font-size: 1.08rem;
+            margin-bottom: 1.2rem;
+        }
+        .dashboard-card .invite-code {
+            font-weight: 600;
+            color: #43e97b;
+            letter-spacing: 1px;
+            margin-bottom: 1.2rem;
+        }
+        .dashboard-card .members-list {
+            margin-bottom: 1.2rem;
+        }
+        .dashboard-card .members-list li {
+            margin-bottom: 0.3rem;
+            font-size: 1.01rem;
+        }
+        .dashboard-card .logout-link {
+            color: #4f8cff;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 0.7rem;
+            transition: color 0.2s;
+        }
+        .dashboard-card .logout-link:hover {
+            color: #23272f;
+            text-decoration: underline;
+        }
+        .chores-container {
+            background: #fff;
+            max-width: 540px;
+            margin: 48px auto;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .chores-container h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #23272f;
+            text-align: center;
+        }
+        .add-chore-form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .add-chore-form input,
+        .add-chore-form select {
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f7faff;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .add-chore-form input:focus,
+        .add-chore-form select:focus {
+            border: 1.5px solid #4f8cff;
+            background: #fff;
+        }
+        .add-chore-form button {
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .add-chore-form button:hover {
+            background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+            transform: translateY(-2px) scale(1.01);
+        }
+        .chore-list-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: #23272f;
+        }
+        .chore-card {
+            background: #fafbfc;
+            border: 1.5px solid #e0e0e0;
+            border-left: 6px solid #43e97b;
+            border-radius: 12px;
+            padding: 1.1rem 1.2rem 1rem 1.2rem;
+            margin-bottom: 1.1rem;
+            box-shadow: 0 2px 8px rgba(67, 233, 123, 0.04);
+            transition: box-shadow 0.2s;
+        }
+        .chore-card:hover {
+            box-shadow: 0 4px 16px rgba(67, 233, 123, 0.10);
+        }
+        .chore-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #23272f;
+            margin-bottom: 0.2rem;
+        }
+        .chore-frequency {
+            font-size: 1rem;
+            color: #888;
+            font-weight: 500;
+        }
+        .chore-next {
+            margin-top: 0.4rem;
+            font-size: 0.98rem;
+            color: #4f8cff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chore-done {
+            margin-top: 0.3rem;
+            font-size: 0.97rem;
+            color: #43e97b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chore-done .done-icon {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="/chores">🧹 View Chores</a>
+        <a href="/expenses">💰 View Expenses</a>
+        <a href="/calendar">📅 View Calendar</a>
+        <a href="/balances">💳 View Balances</a>
+        <a href="/history">📜 View History</a>
+        <a href="/logout">🚪 Logout</a>
+    </div>
+    <div class="dashboard-card">
+        <h2>Welcome, {{ user.email }}</h2>
+        <div class="household-info">
+            <strong>Household:</strong> {{ household.name }}
+        </div>
+        <div class="invite-code">
+            Invite Code: <span>{{ household.code }}</span>
+        </div>
+        <div>
+            <strong>Members:</strong>
+            <ul class="members-list">
+                {% for m in members %}
+                <li>{{ users[m.user_id] }} - {{ m.role }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a class="logout-link" href="/logout">Logout</a>
+    </div>
+   
+</body>
+
+</html>

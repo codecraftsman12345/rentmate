@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Expenses</title>
+  <style>
+    body {
+      background: #f5f6fa;
+      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      margin: 0;
+    }
+    .expenses-container {
+      background: #fff;
+      max-width: 480px;
+      margin: 48px auto;
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .expenses-container h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #23272f;
+      text-align: center;
+    }
+    .expense-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .expense-form input[type="text"],
+    .expense-form input[type="number"],
+    .expense-form input[type="date"],
+    .expense-form select {
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      background: #f7faff;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+      margin-bottom: 0.5rem;
+    }
+    .expense-form input:focus,
+    .expense-form select:focus {
+      border: 1.5px solid #4f8cff;
+      background: #fff;
+    }
+    .expense-form label {
+      font-size: 1rem;
+      color: #23272f;
+      margin-right: 6px;
+    }
+    .expense-form .participants {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    .expense-form .participant-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .expense-form .participant-row input[type='checkbox'] {
+      accent-color: #43e97b;
+    }
+    .expense-form .participant-row input[type='number'] {
+      width: 60px;
+      margin-left: 4px;
+    }
+    .expense-form button,
+    .expense-form input[type="submit"] {
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .expense-form button:hover,
+    .expense-form input[type="submit"]:hover {
+      background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .expense-history-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 2rem 0 1rem 0;
+      color: #23272f;
+    }
+    .expense-history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .expense-history-list li {
+      background: #fafbfc;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 0.7rem;
+      font-size: 1.01rem;
+      color: #23272f;
+      box-shadow: 0 2px 8px rgba(67, 233, 123, 0.04);
+    }
+    .back-link {
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #23272f;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="expenses-container">
+    <h2>Shared Expenses</h2>
+    <form class="expense-form" method="POST">
+      <input type="text" name="description" placeholder="Description" required>
+      <input type="number" name="amount" step="0.01" placeholder="Amount" required>
+      <input type="date" name="date" required>
+      <label>Payer:</label>
+      <select name="payer" required>
+        {% for m in members %}
+        <option value="{{ m.user_id }}">{{ users[m.user_id] }}</option>
+        {% endfor %}
+      </select>
+      <div class="participants">
+        <label>Participants & Shares:</label>
+        {% for m in members %}
+        <div class="participant-row">
+          <input type="checkbox" name="participants" value="{{ m.user_id }}" checked>
+          {{ users[m.user_id] }}
+          <input type="number" name="shares_{{ m.user_id }}" step="0.01" placeholder="%" style="width: 60px;">
+          <span>%</span>
+        </div>
+        {% endfor %}
+      </div>
+      <input type="submit" value="Add Expense">
+    </form>
+    <div class="expense-history-title">Expense History</div>
+    <ul class="expense-history-list">
+      {% for e in expenses %}
+      <li>
+        {{ e.description }} – ₹{{ e.amount }} – Paid by: {{ users[e.payer_id] }} on {{ e.date.strftime('%Y-%m-%d') }}
+      </li>
+      {% endfor %}
+    </ul>
+    <a class="back-link" href="/dashboard">Back to Dashboard</a>
+  </div>
+</body>
+
+</html>

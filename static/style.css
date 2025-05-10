@@ -1,0 +1,98 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 100px auto;
+  background-color: white;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="submit"] {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+a {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #333;
+}
+.chore-list {
+  list-style: none;
+  padding: 0;
+}
+
+.chore-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-left: 6px solid #4caf50;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.chore-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.chore-frequency {
+  font-size: 0.9em;
+  color: #888;
+}
+
+.next-assigned {
+  margin-top: 4px;
+  color: #007bff;
+}
+
+.completed-by {
+  margin-top: 4px;
+  color: #28a745;
+}
+
+.done-button {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.done-button:hover {
+  background-color: #45a049;
+}

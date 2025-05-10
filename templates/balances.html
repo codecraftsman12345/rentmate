@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Balances</title>
+  <style>
+    body {
+      background: #f5f6fa;
+      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      margin: 0;
+    }
+    .balances-container {
+      background: #fff;
+      max-width: 480px;
+      margin: 48px auto;
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .balances-container h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #23272f;
+      text-align: center;
+    }
+    .balance-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+    }
+    .balance-list li {
+      font-size: 1.08rem;
+      margin-bottom: 0.5rem;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: #fafbfc;
+      border: 1.5px solid #e0e0e0;
+      color: #23272f;
+      box-shadow: 0 2px 8px rgba(67, 233, 123, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .balance-positive {
+      color: #43e97b;
+      font-weight: 600;
+    }
+    .balance-negative {
+      color: #ff5e5e;
+      font-weight: 600;
+    }
+    .settlements-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 2rem 0 1rem 0;
+      color: #23272f;
+    }
+    .settlement-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .settlement-list li {
+      background: #f7faff;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 0.7rem;
+      font-size: 1.01rem;
+      color: #23272f;
+      box-shadow: 0 2px 8px rgba(67, 233, 123, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .back-link {
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #23272f;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="balances-container">
+    <h2>Group Balances</h2>
+    <ul class="balance-list">
+      {% for uid, amt in balances.items() %}
+        <li>
+          {{ users[uid] }}:
+          {% if amt > 0 %}
+            <span class="balance-positive">is owed ₹{{ '%.2f'|format(amt) }}</span>
+          {% elif amt < 0 %}
+            <span class="balance-negative">owes ₹{{ '%.2f'|format(-amt) }}</span>
+          {% else %}
+            <span>settled up</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="settlements-title">Who Pays Whom</div>
+    <ul class="settlement-list">
+      {% if settlements %}
+        {% for from_uid, to_uid, amount in settlements %}
+          <li>
+            <span style="color:#ff5e5e;">{{ users[from_uid] }}</span>
+            pays
+            <span style="color:#43e97b;">{{ users[to_uid] }}</span>
+            <strong>₹{{ '%.2f'|format(amount) }}</strong>
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>All settled up! 🎉</li>
+      {% endif %}
+    </ul>
+    <a class="back-link" href="/dashboard">Back to Dashboard</a>
+  </div>
+</body>
+</html>

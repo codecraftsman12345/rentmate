@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Chores</title>
+  <style>
+    body {
+      background: #f5f6fa;
+      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      max-width: 540px;
+      margin: 48px auto;
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #23272f;
+      text-align: center;
+    }
+    form[method="post"] {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    form[method="post"] input[type="text"],
+    form[method="post"] select {
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      background: #f7faff;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    form[method="post"] input[type="text"]:focus,
+    form[method="post"] select:focus {
+      border: 1.5px solid #4f8cff;
+      background: #fff;
+    }
+    form[method="post"] input[type="submit"] {
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    form[method="post"] input[type="submit"]:hover {
+      background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .chore-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .chore-item {
+      background: #fafbfc;
+      border: 1.5px solid #e0e0e0;
+      border-left: 6px solid #43e97b;
+      border-radius: 12px;
+      padding: 1.1rem 1.2rem 1rem 1.2rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 2px 8px rgba(67, 233, 123, 0.04);
+      transition: box-shadow 0.2s;
+    }
+    .chore-item:hover {
+      box-shadow: 0 4px 16px rgba(67, 233, 123, 0.10);
+    }
+    .chore-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #23272f;
+      margin-bottom: 0.2rem;
+    }
+    .chore-frequency {
+      font-size: 1rem;
+      color: #888;
+      font-weight: 500;
+    }
+    .next-assigned {
+      margin-top: 0.4rem;
+      font-size: 0.98rem;
+      color: #4f8cff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .completed-by {
+      margin-top: 0.3rem;
+      font-size: 0.97rem;
+      color: #43e97b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .done-button {
+      background: #43e97b;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 1.1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 0.7rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .done-button:hover {
+      background: #38f9d7;
+      transform: translateY(-2px) scale(1.01);
+    }
+    a {
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #23272f;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Chores for {{ user.email }}</h2>
+    <form method="post">
+      <input type="text" name="name" placeholder="Chore Name" required>
+      <select name="frequency" required>
+        <option value="Daily">Daily</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Monthly">Monthly</option>
+      </select>
+      <input type="date" name="chore_date" required>
+      <input type="submit" value="Add Chore">
+    </form>
+
+    <h3 class="chore-list-title">Chore List</h3>
+    <ul class="chore-list">
+      {% for chore in chores %}
+        <li class="chore-item">
+          <div class="chore-title">{{ chore.name }} <span class="chore-frequency">({{ chore.frequency }})</span></div>
+          <div class="next-assigned">
+            🔁 Assigned to: <strong>{{ users[chore.assigned_to] }}</strong>
+          </div>
+          {% if chore.last_completed %}
+            <div class="completed-by">
+              ✅ Last done on {{ chore.last_completed.strftime('%Y-%m-%d') }} by <strong>{{ users.get(chore.last_completed_by, 'Unknown') }}</strong>
+            </div>
+          {% endif %}
+          {% if chore.assigned_to == user.id %}
+            <form action="/complete_chore/{{ chore.id }}" method="post" style="display:inline;">
+              <button type="submit" class="done-button">Mark Done</button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <a href="/dashboard">Back to Dashboard</a>
+    <pre>{{ members }}</pre>
+  </div>
+</body>
+
+</html>

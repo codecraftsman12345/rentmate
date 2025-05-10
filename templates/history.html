@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>History Log</title>
+  <style>
+  body {
+    background: #f5f6fa;
+    font-family: 'Inter', 'Roboto', Arial, sans-serif;
+    margin: 0;
+  }
+  .history-container {
+    background: #fff;
+    max-width: 540px;
+    margin: 48px auto;
+    padding: 2.5rem 2rem 2rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  .history-container h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #23272f;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .history-container h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.7rem;
+    color: #23272f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+  }
+  .history-container li {
+    background: #fafbfc;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.7rem;
+    font-size: 1.01rem;
+    color: #23272f;
+    box-shadow: 0 2px 8px rgba(67, 233, 123, 0.04);
+  }
+  .history-container strong {
+    color: #23272f;
+    font-weight: 700;
+  }
+  .export-link {
+    color: #4f8cff;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    display: inline-block;
+    transition: color 0.2s;
+    font-weight: 600;
+  }
+  .export-link:hover {
+    color: #23272f;
+    text-decoration: underline;
+  }
+  </style>
+</head>
+<body>
+<div class="history-container">
+  <h2>📜 History Log</h2>
+
+  <h3>✅ Completed Chores</h3>
+  <ul>
+    {% for chore in chores %}
+      <li>
+        <span style="color:#43e97b;">{{ chore.last_completed.strftime('%Y-%m-%d') }}</span>
+        — <span>{{ chore.name }}</span>
+        {% if chore.last_completed_by %}
+          done by {{ users.get(chore.last_completed_by) or chore.last_completed_by }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    {% if chores|length == 0 %}
+      <li>No chores completed yet.</li>
+    {% endif %}
+  </ul>
+
+  <h3>💰 Expenses</h3>
+  <ul>
+    {% for expense in expenses %}
+      <li>
+        <span style="color:#4f8cff;">{{ expense.date.strftime('%Y-%m-%d') }}</span>
+        — <span>{{ expense.description }}</span>:
+        <span style="color:#43e97b;">₹{{ expense.amount }}</span>
+        paid by <strong>{{ users.get(expense.payer_id, 'Unknown') }}</strong>
+      </li>
+    {% endfor %}
+    {% if expenses|length == 0 %}
+      <li>No expenses recorded yet.</li>
+    {% endif %}
+  </ul>
+
+  <a href="{{ url_for('export_csv') }}" class="export-link">📁 Export to CSV</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Household</title>
+  <style>
+    body {
+      background: #f5f6fa;
+      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      margin: 0;
+    }
+    .household-container {
+      background: #fff;
+      max-width: 400px;
+      margin: 60px auto;
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .household-container h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: #222;
+      text-align: center;
+    }
+    .household-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    .household-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      background: #f7faff;
+      font-size: 1rem;
+      transition: border 0.2s;
+      outline: none;
+    }
+    .household-input:focus {
+      border: 1.5px solid #4f8cff;
+      background: #fff;
+    }
+    .household-btn {
+      width: 100%;
+      padding: 0.9rem 0;
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 0.7rem;
+      box-shadow: 0 2px 8px rgba(67, 233, 123, 0.08);
+      transition: background 0.2s, transform 0.1s;
+    }
+    .household-btn:hover {
+      background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .divider {
+      width: 100%;
+      border: none;
+      border-top: 1.5px solid #e0e0e0;
+      margin: 1.5rem 0;
+    }
+    .back-link {
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #222;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="household-container">
+    <h2>Create or Join a Household</h2>
+    <form class="household-form" method="post">
+      <input type="hidden" name="action" value="create">
+      <input class="household-input" type="text" name="name" placeholder="Household Name" required>
+      <button class="household-btn" type="submit">Create Household</button>
+    </form>
+    <hr class="divider">
+    <form class="household-form" method="post">
+      <input type="hidden" name="action" value="join">
+      <input class="household-input" type="text" name="code" placeholder="Enter Invite Code" required>
+      <button class="household-btn" type="submit">Join Household</button>
+    </form>
+    <a class="back-link" href="/dashboard">Back to Dashboard</a>
+  </div>
+</body>
+</html>
